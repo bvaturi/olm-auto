@@ -1,0 +1,26 @@
+---
+
+
+# tasks file for cleanup
+- name: Delete {{ regfiles  }} dir
+  file:
+    state: absent
+    path: "{{ regsfile  }}"
+
+
+- name: Delete {{ regone }} and {{ regtwo }} container
+  containers.podman.podman_container:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ regone }}"
+    - "{{ regtwo }}"
+
+- name: Delete the index images
+  containers.podman.podman_image:
+    name: "{{ item }}"
+    state: absent
+    force: yes
+  loop:
+    - "{{ regone }}"
+    - "{{ regtwo }}"

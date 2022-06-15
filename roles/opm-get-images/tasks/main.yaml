@@ -1,0 +1,4 @@
+---
+
+
+- import_tasks: get-images-to-registry-one.yaml 

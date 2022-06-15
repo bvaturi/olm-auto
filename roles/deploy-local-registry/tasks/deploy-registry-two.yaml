@@ -1,0 +1,91 @@
+---
+
+
+- name: Create myregistry directory and sub-directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ regsfile }}/{{ regtwo  }}"
+    - "{{ regsfile }}/{{ regtwo  }}/auth"
+    - "{{ regsfile }}/{{ regtwo  }}/certs"
+    - "{{ regsfile }}/{{ regtwo  }}/data"
+    - "{{ regsfile }}/{{ regtwo  }}/data/registry"
+    - "{{ regsfile }}/{{ regtwo  }}/downloads"
+    - "{{ regsfile }}/{{ regtwo  }}/downloads/images"
+    - "{{ regsfile }}/{{ regtwo  }}/downloads/tools"
+    - "{{ regsfile }}/{{ regtwo  }}/downloads/secrets"
+
+
+- name: Add myregistry to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 {{ regtwo  }}'
+    insertbefore: BOF
+  become: yes
+
+- name:  Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  community.crypto.openssl_privatekey:
+    path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}_key.pem"
+    
+  
+- name: Generate an OpenSSL Certificate Signing Request
+  community.crypto.openssl_csr:
+    path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}.csr"
+    privatekey_path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}_key.pem"
+    common_name: "{{ regtwo  }}.localdomain"
+
+- name: Generate a Self Signed OpenSSL certificate for {{ regtwo  }}
+  openssl_certificate:
+    path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}_crt.crt"
+    privatekey_path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}_key.pem"
+    csr_path: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}.csr"
+    provider: selfsigned
+
+- name: Copy registry crt file to anchors
+  copy:
+    src: "{{ regsfile }}/{{ regtwo  }}/certs/{{ regtwo  }}_crt.crt"
+    dest: /etc/pki/ca-trust/source/anchors/
+
+- name: update-ca-trust
+  command: update-ca-trust extract
+
+- name: Generate htpasswd file for start-repository.sh
+  command: htpasswd -bBc {{ regsfile }}/{{ regtwo  }}/auth/htpasswd admin redhat
+  become: true
+
+- name: Create a registry container
+  containers.podman.podman_container:
+    name: "{{ regtwo  }}"
+    image: docker.io/library/registry:2
+    state: started
+    ports:
+      - 5001:5000
+    volume:
+      - "{{ regsfile }}/{{ regtwo  }}/data:/var/lib/registry:z"
+      - "{{ regsfile }}/{{ regtwo  }}/auth:/auth:z"
+      - "{{ regsfile }}/{{ regtwo  }}/certs:/certs:z"
+    env:
+        REGISTRY_AUTH: "htpasswd"
+        REGISTRY_AUTH_HTPASSWD_REALM: "Registry"
+        REGISTRY_HTTP_SECRET: "ALongRandomSecretForRegistry"
+        REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+        REGISTRY_HTTP_TLS_CERTIFICATE: /certs/{{ regtwo  }}_crt.crt
+        REGISTRY_HTTP_TLS_KEY: /certs/{{ regtwo  }}_key.pem
+
+
+
+- name: login to {{ regtwo  }}
+  shell: podman login {{ regtwo  }}:5001 -u admin -p redhat --tls-verify=false
+  register: pod_reg_login_out
+
+- debug:
+    var: pod_reg_login_out.stdout_lines
+
+
+- name: curl the registry catalog
+  shell: echo $( curl -u admin:redhat -k https://{{ regone  }}:5001/v2/_catalog)
+  register: curl_out
+
+- debug:
+    var: curl_out.stdout_lines 
