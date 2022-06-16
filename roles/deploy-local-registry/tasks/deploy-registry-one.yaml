@@ -74,6 +74,3 @@
         REGISTRY_HTTP_TLS_CERTIFICATE: /certs/{{ regone  }}_crt.crt
         REGISTRY_HTTP_TLS_KEY: /certs/{{ regone  }}_key.pem
 
-
-#- name: Podman save the registry image to tar
-#  shell: "podman save > /tmp/myregistry/data/registry/registryimage.tar docker.io/library/registry:2"

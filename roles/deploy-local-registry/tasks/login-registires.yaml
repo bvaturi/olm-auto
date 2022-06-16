@@ -27,17 +27,3 @@
 - debug:
     var: curl.out.stdout_lines
 
-- name: login to {{ regtwo  }}
-  shell: podman login {{ regtwo  }}:5001 -u admin -p redhat --tls-verify=false
-  register: pod_reg_login_out
-
-- debug:
-    var: pod_reg_login_out.stdout_lines
-
-- name: curl the registry catalog
-  shell: echo $( curl -u admin:redhat -k https://{{ regone  }}:5001/v2/_catalog)
-  register: curl_out
-
-- debug:
-    var: curl_out.stdout_lines
-

@@ -2,4 +2,3 @@
 
 - import_tasks: deploy-registry-one.yaml
 - import_tasks: login-registires.yaml 
-- import_tasks: deploy-registry-two.yaml
