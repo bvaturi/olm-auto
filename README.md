@@ -75,5 +75,6 @@ you will see the output with all the images.
    ``` oc apply -f <the files> ```
 
 # TODO
-1. In case the user of the automation wants to mirror multiple operators, generate each of them an index image so they will be decoupled when deployed on OCP
+1. In case the user of the automation wants to mirror multiple operators, generate each of them an index image so they will be **decoupled** when deployed on OCP
 2. Make the variable `required image` in the playbook to be of type `like` query instead of `exact`
+3. Make `grpcurl` also as a prep step automatically
