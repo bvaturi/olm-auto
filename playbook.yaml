@@ -7,7 +7,7 @@
     extfile: "{{ playbook_dir }}/extfiles"
     scrptfile: "{{ playbook_dir }}/scripts" 
     regsfile:  "{{ playbook_dir }}/regs"
-    regone: "registryone"
+    regone: "localregistry"
     regtwo: "registrytwo"
     imagelist: "kiali-ossm"
     ocpver:  "v4.8"

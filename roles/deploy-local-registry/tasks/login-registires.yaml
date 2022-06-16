@@ -1,0 +1,43 @@
+---
+- name: "logging in to quay.io with podman + robot account"
+  command: podman login --authfile /tmp/pull-secret.json quay.io
+  register: login_quay_output
+
+- debug:
+    msg: "{{login_quay_output.stdout}}"
+
+- name: "logging in to registry.redhat.io with podman + Registry Service Account"
+  command: podman login --authfile /tmp/pull-secret.json registry.redhat.io
+  register: login_redhat_registry_output
+
+- debug:
+    msg: "{{login_redhat_registry_output.stdout}}"
+
+- name: login to {{ regone  }}
+  shell: podman login {{ regone  }}:5000 -u admin -p redhat --tls-verify=false
+  register: pod_reg_login_out
+
+- debug:
+    var: pod_reg_login_out.stdout_lines
+
+- name: curl the registry catalog
+  shell: echo $(curl -u admin:redhat -k https://{{ regone  }}:5000/v2/_catalog)
+  register: curl_out
+
+- debug:
+    var: curl.out.stdout_lines
+
+- name: login to {{ regtwo  }}
+  shell: podman login {{ regtwo  }}:5001 -u admin -p redhat --tls-verify=false
+  register: pod_reg_login_out
+
+- debug:
+    var: pod_reg_login_out.stdout_lines
+
+- name: curl the registry catalog
+  shell: echo $( curl -u admin:redhat -k https://{{ regone  }}:5001/v2/_catalog)
+  register: curl_out
+
+- debug:
+    var: curl_out.stdout_lines
+
