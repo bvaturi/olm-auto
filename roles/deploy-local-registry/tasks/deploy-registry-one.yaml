@@ -74,21 +74,3 @@
         REGISTRY_HTTP_TLS_CERTIFICATE: /certs/{{ regone  }}_crt.crt
         REGISTRY_HTTP_TLS_KEY: /certs/{{ regone  }}_key.pem
 
-
-#- name: Podman save the registry image to tar
-#  shell: "podman save > /tmp/myregistry/data/registry/registryimage.tar docker.io/library/registry:2"
-
-- name: login to {{ regone  }}
-  shell: podman login {{ regone  }}:5000 -u admin -p redhat --tls-verify=false
-  register: pod_reg_login_out
-
-- debug:
-    var: pod_reg_login_out.stdout_lines
-
-- name: curl the registry catalog
-  shell: echo $(curl -u admin:redhat -k https://{{ regone  }}:5000/v2/_catalog)
-  register: curl_out
-
-- debug:
-    var: curl.out.stdout_lines
-

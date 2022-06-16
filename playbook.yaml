@@ -2,14 +2,13 @@
 - hosts: localhost
   vars:
     index_image: # Choose one of the following: redhat-operator/certified-operator/community-operator
-    required_operator: # Operators exact names: name1,name2,name3...
-    destfile: "{{  playbook_dir  }}/files"
-    extfile: "{{ playbook_dir }}/extfiles"
+    destfile: "{{  playbook_dir  }}/files" 
+    extfile: "{{ playbook_dir }}/extfiles" # This folder contains all the files that will be needed at the restricted network
     scrptfile: "{{ playbook_dir }}/scripts" 
     regsfile:  "{{ playbook_dir }}/regs"
-    regone: "registryone"
+    regone: "localregistry"
     regtwo: "registrytwo"
-    imagelist: "kiali-ossm"
+    imagelist: "jaeger-product" # The name of the desired operator
     ocpver:  "v4.8"
     rhindex: "registry.redhat.io" 
   
