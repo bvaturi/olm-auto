@@ -104,7 +104,9 @@ oc apply -f <the files>
 # TODO
 1. Make the variable `imagelist` in the playbook to be of type `like` query instead of `exact`
 2. Delete unused vars from playbook 
-3. @tommeramber add redhat login too all RH registries
+3. @tommeramber add redhat login too all RH registries - Done, Please Test @bvaturi
 4. grpcurl - adjust for a single operator
 5. Soft link + restart in internal netowkr + run.sh with oc mirror commands to internal registry
-6. V2 - In case the user of the automation wants to mirror multiple operators, generate each of them an index image so they will be decoupled when deployed on OCP
+6. change the output data.tar.gz file to have the required image name + ocp version
+7. V2 - In case the user of the automation wants to mirror multiple operators, generate each of them an index image so they will be decoupled when deployed on OCP
+

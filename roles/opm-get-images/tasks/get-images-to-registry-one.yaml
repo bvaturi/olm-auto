@@ -8,6 +8,7 @@
 - name: push images to {{ regone }}
   shell: podman push {{ regone }}:5000/olm/redhat-operator-index:{{ ocpver }} --tls-verify=false
 
+# This step will add the pruned index image to the final data.tar.gz file
 - name: oc adm catalog mirror from {{ regone }} to {{ regtwo }}
   shell: oc adm catalog mirror {{ regone }}:5000/olm/redhat-operator-index:{{ ocpver }} {{ regtwo }}:5001/olm --insecure
 
