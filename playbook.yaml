@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   vars:
-    index_image: # Choose one of the following: redhat-operator/certified-operator/community-operator
-    required_operator: # Operators exsact names: name1,name2,name3...
+    index_image: redhat-operator # Choose one of the following: redhat-operator/certified-operator/community-operator
+    required_operator: # Operators exact names: name1,name2,name3...
     destfile: "{{  playbook_dir  }}/files"
     extfile: "{{ playbook_dir }}/extfiles"
     scrptfile: "{{ playbook_dir }}/scripts" 
