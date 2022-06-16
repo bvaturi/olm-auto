@@ -73,3 +73,7 @@ you will see the output with all the images.
 5. please push the images to your artifactory / registry
 6. apply the image content policy and the catalog from the manifest folder.
    ``` oc apply -f <the files> ```
+
+# TODO
+1. In case the user of the automation wants to mirror multiple operators, generate each of them an index image so they will be decoupled when deployed on OCP
+2. Make the variable `required image` in the playbook to be of type `like` query instead of `exact`
