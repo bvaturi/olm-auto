@@ -1,4 +1,5 @@
 ---
 
 
-- import_tasks: get-images-to-registry-one.yaml 
+- import_tasks: get-images-to-registry-one.yaml
+- import_tasks: grpcurl-operator.yaml  
