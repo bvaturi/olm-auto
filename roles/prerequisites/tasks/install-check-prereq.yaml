@@ -25,8 +25,12 @@
   tags:
     - packeges
 
+- debug:
+   msg: "{{ ansible_os_family }}"
+
 - name: install yum module container-tools
   shell: yum module install -y container-tools:rhel8
+  when: ansible_os_family == "Red Hat Enterprise Linux"
   tags:
     - yummodule
 
@@ -34,6 +38,7 @@
   get_url: 
     url: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
     dest: "{{ destfile }}"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
   tags:
     - occlient
 
@@ -41,6 +46,7 @@
   ansible.builtin.unarchive:
     src: "{{ destfile }}/openshift-client-linux.tar.gz"
     dest: "{{ extfile }}"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
   tags:
     - ocextract
 
@@ -48,6 +54,7 @@
   get_url: 
     url: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/opm-linux.tar.gz
     dest: "{{ destfile }}"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
   tags:
     - opmclient
 
@@ -55,6 +62,7 @@
   ansible.builtin.unarchive:
     src: "{{ destfile }}/opm-linux.tar.gz"
     dest: "{{ extfile }}"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
   tags:
     - opmextract
 
@@ -62,6 +70,7 @@
   get_url:
     url: https://github.com/fullstorydev/grpcurl/releases/download/v1.8.6/grpcurl_1.8.6_linux_x86_64.tar.gz
     dest: "{{ destfile }}"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
   tags:
     - grpcrulinstall
 
@@ -69,6 +78,8 @@
   ansible.builtin.unarchive:
     src: "{{ destfile }}/grpcurl_1.8.6_linux_x86_64.tar.gz"
     dest: "{{ extfile }}"
+  args:
+    creates: /usr/local/sbin/grpcurl
   tags:
     -grpcurlextract
 
@@ -76,5 +87,7 @@
   copy:
     src: "{{ extfile }}/"
     dest: /usr/local/bin
+  args:
+    creates: /usr/local/sbin/{oc,opm,kubectl,hrpcurl}
   become: yes
 
