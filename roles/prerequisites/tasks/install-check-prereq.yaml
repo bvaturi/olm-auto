@@ -39,7 +39,7 @@
   get_url: 
     url: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/openshift-client-linux.tar.gz
     dest: "{{ destfile }}"
-  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "RedHat"
   tags:
     - occlient
 
@@ -47,7 +47,7 @@
   ansible.builtin.unarchive:
     src: "{{ destfile }}/openshift-client-linux.tar.gz"
     dest: "{{ extfile }}"
-  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "RedHat"
   tags:
     - ocextract
 
@@ -55,7 +55,7 @@
   get_url: 
     url: https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest/opm-linux.tar.gz
     dest: "{{ destfile }}"
-  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "RedHat"
   tags:
     - opmclient
 
@@ -63,7 +63,7 @@
   ansible.builtin.unarchive:
     src: "{{ destfile }}/opm-linux.tar.gz"
     dest: "{{ extfile }}"
-  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "RedHat"
   tags:
     - opmextract
 
@@ -71,7 +71,7 @@
   get_url:
     url: https://github.com/fullstorydev/grpcurl/releases/download/v1.8.6/grpcurl_1.8.6_linux_x86_64.tar.gz
     dest: "{{ destfile }}"
-  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "Red Hat"
+  when: ansible_os_family == "Red Hat Enterprise Linux" or ansible_os_family == "RedHat"
   tags:
     - grpcrulinstall
 
@@ -84,11 +84,33 @@
   tags:
     -grpcurlextract
 
+- name: copy oc
+  copy:
+    src: "{{ extfile }}/"
+    dest: /usr/local/bin
+    force: no
+  become: yes
+
+
+- name: copy grpcurl to /usr/local/bin
+  copy:
+    src: "{{ extfile }}/"
+    dest: /usr/local/bin
+    force: no
+  become: yes
+
+- name: copy opm /usr/local/bin
+  copy:
+    src: "{{ extfile }}/"
+    dest: /usr/local/bin
+    force: no
+  become: yes
+
 - name: copy opm oc kubectl grpcurl to /usr/local/bin
   copy:
     src: "{{ extfile }}/"
     dest: /usr/local/bin
-  args:
-    creates: /usr/local/sbin/{oc,opm,kubectl,hrpcurl}
+    force: no
   become: yes
+
 
