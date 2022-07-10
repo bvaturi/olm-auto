@@ -1,0 +1,34 @@
+---
+
+
+- name: Run the original index
+  containers.podman.podman_container:
+    name: temp_index
+    image: "{{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }}"
+    state: started
+    ports:
+      - 50051:50051
+
+
+- name: GRPCURL Original Index
+  shell: "grpcurl -plaintext localhost:50051 api.Registry/ListPackages > {{  playbook_dir  }}/packages.out"
+
+- name: echo
+  shell: cat {{  playbook_dir  }}/packages.out
+  register: packages
+
+- debug:
+   var: packages.stdout_lines
+ 
+- pause:
+    prompt: "please copy your desired operators LIKE THIS (no space after ','): opertor1,opertor2,operaor3"
+  register: operators
+
+
+- debug:
+   var: operators.user_input
+
+
+- name: run opm index prune to registry one
+  shell: opm index prune -f {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }} -p operators.user_input  -t {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }}
+  become: yes
