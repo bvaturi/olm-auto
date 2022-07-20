@@ -25,5 +25,5 @@
   register: curl_out
 
 - debug:
-    var: curl.out.stdout_lines
+    var: curl_out.stdout_lines
 

@@ -8,7 +8,7 @@
     regsfile:  "{{ playbook_dir }}/regs"
     regone: "localregistry"
     regtwo: "registrytwo"
-    imagelist: "jaeger-product" # The name of the desired operator
+    imagelist: "kiali" # The name of the desired operator
     ocpver:  "v4.8"
     rhindex: "registry.redhat.io" 
   
