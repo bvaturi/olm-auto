@@ -1,5 +1,9 @@
----
+--- 
 
+
+
+- name: run opm index on podman
+  shell: podman run -p50051:50051 -d -it {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }}
 
 - name: grep the indext --> operators names to packages.out file
   shell: grpcurl -plaintext localhost:50051 api.Registry/ListPackages >{{ extfile }}/packages.out
@@ -13,9 +17,11 @@
   shell: "grep {{ imagelist }} {{ extfile }}/packages.out | awk '{print $2}'"
   register: grepname_out
 
+
 - name: register the name of the operator
   debug:
    var: grepname_out.stdout_lines
 
 
 
+~                                 

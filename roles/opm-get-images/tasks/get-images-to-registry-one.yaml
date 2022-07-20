@@ -1,8 +1,11 @@
 ---
 
+- name: register the name of the operator
+  debug:
+   var: grepname_out.stdout
 
 - name: run opm index prune to registry one
-  shell: opm index prune -f {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }} -p {{ imagelist }} -t {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }}
+  shell: opm index prune -f {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }} -p {{ grepname_out.stdout }} -t {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }}
   become: yes
 
 - name: push images to {{ regone }}

@@ -24,3 +24,7 @@
   loop:
     - "{{ regone }}"
     - "{{ regtwo }}"
+
+- name: Delete container 50051
+  shell: sudo podman ps | grep {{ rhindex }}/redhat/redhat-operator-index | sudo podman rm -f $(awk '{print  $1}') 
+  become: true
