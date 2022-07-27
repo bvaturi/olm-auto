@@ -28,11 +28,13 @@ sudo ansible-galaxy collection install community.general
 
     i. data_<operator_name>.tar.gz file at extfiles
   
-    ii. latest `oc` binary
-    > @bvaturi it to the data.tar.gz
+    ii.  latest `oc` binary
+    iii. latest `opm` binary
+    iv.  `grpcurl`
+    v.   `kubectl`
   
     iii. A `manifests_<operator_name>` file at the `run` directory (where you ran the playbook)
-    > @bvaturi it to the data.tar.gz
+
 
   
 ## changeable params:
