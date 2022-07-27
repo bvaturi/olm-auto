@@ -7,15 +7,13 @@
     scrptfile: "{{ playbook_dir }}/scripts" 
     regsfile:  "{{ playbook_dir }}/regs"
     regone: "localregistry"
-    regtwo: "registrytwo"
-    imagelist: "kiali" # The name of the desired operator
     ocpver:  "v4.8"
     rhindex: "registry.redhat.io" 
   
   tasks:
   - block:
     - include_role:
-        name: prerequisites
+         name: prerequisites
     - include_role:
          name: deploy-local-registry
     - include_role:
