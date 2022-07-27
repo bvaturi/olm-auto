@@ -5,16 +5,16 @@
    var: useroperator.user_input 
 
 - name: run opm index prune to registry one
-  shell: opm index prune -f {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }} -p {{ useroperator.user_input }} -t {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }}
+  shell: opm index prune -f {{ rhindex }}/redhat/{{ rhuserindex.user_input }}:{{ ocpver }} -p {{ useroperator.user_input }} -t {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }}
   become: yes
 
 - name: push images to {{ regone }}
-  shell: podman push {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }} --tls-verify=false
+  shell: podman push {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }} --tls-verify=false
   become: yes 
 
 # This step will add the pruned index image to the final data.tar.gz file
 - name: oc adm catalog mirror from {{ regone }} to {{ regone }}
-  shell: oc adm catalog mirror {{ regone }}:5000/olm-pre/redhat-operator-index:{{ ocpver }} {{ regone }}:5000/olm --insecure
+  shell: oc adm catalog mirror {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }} {{ regone }}:5000/olm --insecure
   become: yes
 
 - name: compress {{ regtwo }} data file

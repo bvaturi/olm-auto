@@ -1,7 +1,6 @@
 ---
 - hosts: localhost
   vars:
-    index_image: # Choose one of the following: redhat-operator/certified-operator/community-operator
     destfile: "{{  playbook_dir  }}/files" 
     extfile: "{{ playbook_dir }}/extfiles" # This folder contains all the files that will be needed at the restricted network
     scrptfile: "{{ playbook_dir }}/scripts" 

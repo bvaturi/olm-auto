@@ -1,8 +1,13 @@
 ---
 
+- name: rhuserindex   
+  pause: 
+    prompt: Choose one of the following- redhat-operator-index /certified-operator-index /redhat-marketplace-index / community-operator-index
+  register: rhuserindex
+
 
 - name: run opm index on podman 
-  shell: podman run -p50051:50051 -d -it {{ rhindex }}/redhat/redhat-operator-index:{{ ocpver }}
+  shell: podman run -p50051:50051 -d -it registry.redhat.io/redhat/{{ rhuserindex.user_input }}:{{ ocpver }}
 
 - name: grep the indext --> operators names to packages.out file
   shell: grpcurl -plaintext localhost:50051 api.Registry/ListPackages >{{ extfile }}/packages.out
