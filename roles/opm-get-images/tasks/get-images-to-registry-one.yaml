@@ -20,5 +20,19 @@
 - name: compress {{ regtwo }} data file
   archive: 
     path: "{{ regsfile }}/{{ regone  }}/data"
-    dest: "{{ extfile }}/data.tar.gz"
+    dest: "{{ extfile }}/data_{{ useroperator.user_input }}.tar.gz"
+
+
+- name: move manifest folder to {{ extfile }}
+  shell: mv manifest* {{ extfile }}/{{ useroperator.user_input }}_manifest
+  become: yes
+
+- name: change catalog source name
+  shell:  sed -i 's/redhat-operator-index/redhat-operator-index-{{ useroperator.user_input }}/g' {{ extfile }}/{{ useroperator.user_input }}_manifest/catalogSource.yaml 
+  become: yes
+
+
+- name: change catalog source name
+  shell:  sed -i 's/redhat-operator-index/redhat-operator-index-{{ useroperator.user_input }}/g' {{ extfile }}/{{ useroperator.user_input }}_manifest/imageContentSourcePolicy.yaml
+  become: yes
 
