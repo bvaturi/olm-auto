@@ -7,6 +7,12 @@
     state: absent
     path: "{{ regsfile  }}"
 
+# tasks file for cleanup
+- name: Delete {{ destfile  }} dir
+  file:
+    state: absent
+    path: "{{ destfile  }}"
+    
 
 - name: Delete {{ regone }} and {{ regtwo }} container
   containers.podman.podman_container:

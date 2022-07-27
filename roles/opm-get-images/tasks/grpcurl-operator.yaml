@@ -6,18 +6,33 @@
 
 - name: grep the indext --> operators names to packages.out file
   shell: grpcurl -plaintext localhost:50051 api.Registry/ListPackages >{{ extfile }}/packages.out
-  register: grp_out
 
-- name:
-  debug:
-    var: grp_out.stdout_lines
+
 
 - name: remove \" from file
   shell: sed 's/"//g' {{ extfile }}/packages.out
   become: true 
 
+- name: show packages output
+  shell: less {{ extfile }}/packages.out
+  register: packages
+
+
+- debug:
+    msg: "{{ packages.stdout_lines }}"
+
+- name: useroperator   
+  pause: 
+    prompt: enter a SINGLE OPERATOR please
+  register: useroperator
+
+
+- debug:
+    var: useroperator.user_input
+
+
 - name: get the exact name of the single operator
-  shell: "grep {{ imagelist }} {{ extfile }}/packages.out | awk '{print $2}' | sed 's/\"//g' "
+  shell: "grep {{ packages.stdout_lines }} {{ extfile }}/packages.out | awk '{print $2}' | sed 's/\"//g' "
   register: grepname_out
 
 
