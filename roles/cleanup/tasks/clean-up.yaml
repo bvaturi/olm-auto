@@ -12,7 +12,19 @@
   file:
     state: absent
     path: "{{ destfile  }}"
-    
+
+- name: Delete {{ extfile }} dir
+  file:
+    state: absent
+    path: "{{ extfile }}/{{ item }}"
+  loop:
+    - oc
+    - opm
+    - kubectl
+    - grpcurl
+    - README.md
+    - LICENSE
+    - packages.out
 
 - name: Delete {{ regone }} container
   containers.podman.podman_container:

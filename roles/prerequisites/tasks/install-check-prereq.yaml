@@ -76,6 +76,7 @@
   copy:
     src: "{{ extfile }}/{{ item  }}"
     dest: /usr/local/bin
+    mode: 0777
   become: yes
   with_items:
     - opm
@@ -87,6 +88,7 @@
   copy:
     src: "{{ extfile }}/{{ item  }}"
     dest: /usr/local/sbin
+    mode: 0777
   become: yes
   with_items:
     - opm
@@ -94,10 +96,11 @@
     - kubectl
     - grpcurl
 
-- name: cpoy grpcurl to /usr/bin
+- name: copy grpcurl to /usr/bin
   copy:
     src: "{{ extfile }}/{{ item }}"
     dest: /usr/bin
+    mode: 0777
   become: yes
   with_items:
     - opm

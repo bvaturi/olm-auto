@@ -6,7 +6,7 @@
     scrptfile: "{{ playbook_dir }}/scripts" 
     regsfile:  "{{ playbook_dir }}/regs"
     regone: "localregistry"
-    ocpver:  "v4.8"
+    ocpver:  "v4.9"
     rhindex: "registry.redhat.io" 
   
   tasks:
