@@ -1,5 +1,4 @@
-# olm-auto - BETA version :)
-
+# olm-auto - BETA version :) Linux Dependent
 # Intro
 This playbook is designed to create a data folder for internal registry at the restricted network environment.
 
