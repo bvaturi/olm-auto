@@ -44,12 +44,7 @@ sudo ansible-galaxy collection install community.general
 
     i. data_<operator_name>.tar.gz file at extfiles
   
-    ii.  latest `oc` binary
-    iii. latest `opm` binary
-    iv.  `grpcurl`
-    v.   `kubectl`
-  
-    iii. A `manifests_<operator_name>` file at the `run` directory (where you ran the playbook)
+    ii. A `manifests_<operator_name>` file at the `run` directory (where you ran the playbook)
 
 
   
@@ -83,11 +78,11 @@ curl -u admin:redhat -k https://${Local_registry}:5000/v2/_catalog
 
 > You will see the output with all the images.
 
-5. Please push the images to your artifactory / registry
+6. Please push the images to your artifactory / registry
 
-6. change the image content policy and the catalog source to point to YOUR registry / artifactory
+7. change the image content policy and the catalog source to point to YOUR registry / artifactory
 
-7. Apply the image content policy and the catalog from the manifest folder.   
+8. Apply the image content policy and the catalog from the manifest folder.   
 ```bash
 oc apply -f <the files> 
 ```
