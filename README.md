@@ -9,11 +9,12 @@ This playbook is designed to create a data folder for internal registry at the r
 # Before Running the playbook
 0. Access: https://console.redhat.com/openshift/install/pull-secret and download a pull-secret.json file to `/tmp/pull-secret.json`
    
-   if the login automation not worknig, please login manually
+   Also do the next command and enter your credentials:
    sudo podman login registry.redhat.io
  
 
 1. Make sure you have enough space available on the disk (more than 50GB)
+   *** If you use partitions make sure /var have at least 5GB and other memory is at /
 
 2. Run:
 ```bash
