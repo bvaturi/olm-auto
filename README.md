@@ -1,5 +1,4 @@
-# olm-auto - BETA version :)
-
+# olm-auto - BETA version :) Linux Dependent
 # Intro
 This playbook is designed to create a data folder for internal registry at the restricted network environment.
 
@@ -16,16 +15,32 @@ This playbook is designed to create a data folder for internal registry at the r
 1. Make sure you have enough space available on the disk (more than 50GB)
    *** If you use partitions make sure /var have at least 5GB and other memory is at /
 
-2. Run:
+2. Make sure you have installed ansible-core and git:
+```bash
+yum install ansible-core git -y
+```
+3. Run:
 ```bash
 sudo ansible-galaxy collection install community.crypto
 sudo ansible-galaxy collection install containers.podman
 sudo ansible-galaxy collection install community.general
 ```
 
-3. Run the playbook as `root` 
+4. A nice way to find out your operator name"
+   i.    Login to your selcted registry (redhat op hub/comunity/etc)
+   ii.   Run the following command and edit the according variables.
+   ```bash
+      podman run -itd -p 50051:50051 registry.redhat.io/redhat/<redhat/community/certified>-operator-index:v<major_ocp_version__example=4.9>
+   ```
+   iii.  Finding out the operator name:
+   ```bash
+      grpcurl -plaintext localhost:50051 api.Registry/ListPackages | grep <operator name or the part you know with an *>
+   ```
+   iiii. After this is done you can delete the regitsry pod that we created with the "$ podman // docker rm -f <pod name / pod id>"
+   
+5. Run the playbook as `root` 
 
-4. The playbook will create:
+6. The playbook will create:
 
     i. data_<operator_name>.tar.gz file at extfiles
   
