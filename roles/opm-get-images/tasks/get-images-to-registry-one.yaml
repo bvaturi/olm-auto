@@ -5,34 +5,23 @@
    var: useroperator.user_input 
 
 - name: run opm index prune to registry one
-  shell: opm index prune -f {{ rhindex }}/redhat/{{ rhuserindex.user_input }}:{{ ocpver }} -p {{ useroperator.user_input }} -t {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }}
+  shell: opm index prune -f {{ rhindex }}/redhat/{{ rhuserindex.user_input }}:{{ ocpver }} -p {{ grepname_out.stdout }} -t {{ regone }}:5000/index-image/{{ grepname_out.stdout }}:{{ ocpver }}
   become: yes
 
 - name: push images to {{ regone }}
-  shell: podman push {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }} --tls-verify=false
+  shell: podman push {{ regone }}:5000/index-image/{{ grepname_out.stdout }}:{{ ocpver }} --tls-verify=false
   become: yes 
 
 # This step will add the pruned index image to the final data.tar.gz file
 - name: oc adm catalog mirror from {{ regone }} to {{ regone }}
-  shell: oc adm catalog mirror {{ regone }}:5000/olm-pre/{{ rhuserindex.user_input }}:{{ ocpver }} {{ regone }}:5000/olm --insecure
+  shell: oc adm catalog mirror {{ regone }}:5000/index-image/{{ grepname_out.stdout }}:{{ ocpver }} {{ regone }}:5000/olm --insecure
   become: yes
 
 - name: compress {{ regtwo }} data file
   archive: 
     path: "{{ regsfile }}/{{ regone  }}/data"
-    dest: "{{ extfile }}/data_{{ useroperator.user_input }}.tar.gz"
-
+    dest: "{{ extfile }}/data_{{ grepname_out.stdout }}.tar.gz"
 
 - name: move manifest folder to {{ extfile }}
-  shell: mv manifest* {{ extfile }}/{{ useroperator.user_input }}_manifest
+  shell: mv manifest* {{ extfile }}/{{ grepname_out.stdout }}_manifest
   become: yes
-
-- name: change catalog source name
-  shell:  sed -i 's/redhat-operator-index/redhat-operator-index-{{ useroperator.user_input }}/g' {{ extfile }}/{{ useroperator.user_input }}_manifest/catalogSource.yaml 
-  become: yes
-
-
-- name: change catalog source name
-  shell:  sed -i 's/redhat-operator-index/redhat-operator-index-{{ useroperator.user_input }}/g' {{ extfile }}/{{ useroperator.user_input }}_manifest/imageContentSourcePolicy.yaml
-  become: yes
-

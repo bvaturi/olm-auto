@@ -15,25 +15,36 @@ This playbook is designed to create a data folder for internal registry at the r
 1. Make sure you have enough space available on the disk (more than 50GB)
    *** If you use partitions make sure /var have at least 5GB and other memory is at /
 
-2. Run:
+2. Make sure you have installed ansible-core and git:
+```bash
+yum install ansible-core git -y
+```
+3. Run:
 ```bash
 sudo ansible-galaxy collection install community.crypto
 sudo ansible-galaxy collection install containers.podman
 sudo ansible-galaxy collection install community.general
 ```
 
-3. Run the playbook as `root` 
+4. A nice way to find out your operator name"
+   i.    Login to your selcted registry (redhat op hub/comunity/etc)
+   ii.   Run the following command and edit the according variables.
+   ```bash
+      podman run -itd -p 50051:50051 registry.redhat.io/redhat/<redhat/community/certified>-operator-index:v<major_ocp_version__example=4.9>
+   ```
+   iii.  Finding out the operator name:
+   ```bash
+      grpcurl -plaintext localhost:50051 api.Registry/ListPackages | grep <operator name or the part you know with an *>
+   ```
+   iiii. After this is done you can delete the regitsry pod that we created with the "$ podman // docker rm -f <pod name / pod id>"
+   
+5. Run the playbook as `root` 
 
-4. The playbook will create:
+6. The playbook will create:
 
     i. data_<operator_name>.tar.gz file at extfiles
   
-    ii.  latest `oc` binary
-    iii. latest `opm` binary
-    iv.  `grpcurl`
-    v.   `kubectl`
-  
-    iii. A `manifests_<operator_name>` file at the `run` directory (where you ran the playbook)
+    ii. A `manifests_<operator_name>` file at the `run` directory (where you ran the playbook)
 
 
   
@@ -67,11 +78,11 @@ curl -u admin:redhat -k https://${Local_registry}:5000/v2/_catalog
 
 > You will see the output with all the images.
 
-5. Please push the images to your artifactory / registry
+6. Please push the images to your artifactory / registry
 
-6. change the image content policy and the catalog source to point to YOUR registry / artifactory
+7. change the image content policy and the catalog source to point to YOUR registry / artifactory
 
-7. Apply the image content policy and the catalog from the manifest folder.   
+8. Apply the image content policy and the catalog from the manifest folder.   
 ```bash
 oc apply -f <the files> 
 ```

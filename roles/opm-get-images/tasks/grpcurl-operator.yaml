@@ -37,7 +37,7 @@
 
 
 - name: get the exact name of the single operator
-  shell: "grep {{ packages.stdout_lines }} {{ extfile }}/packages.out | awk '{print $2}' | sed 's/\"//g' "
+  shell: "grep {{ useroperator.user_input }} {{ extfile }}/packages.out | awk '{print $2}' | sed 's/\"//g' "
   register: grepname_out
 
 
